@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Direct Chat</title>
+    <style>
+        /* General Reset */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1b262c, #0f4c75);
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #075e54;
+            color: #ffffff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #1da851;
+        }
+
+        /* Container */
+        .container {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .container.dark-mode {
+            background-color: #2a3942;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #075e54;
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .header.dark-mode {
+            background-color: #1c3334;
+        }
+
+        /* Input Fields */
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #25d366;
+        }
+
+        .dark-mode select, .dark-mode input {
+            background-color: #3c4a51;
+            color: #ffffff;
+            border-color: #555;
+        }
+
+        /* Buttons */
+        button {
+            padding: 12px;
+            background-color: #25d366;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background-color: #1da851;
+        }
+
+        .business-btn {
+            background-color: #128c7e;
+        }
+
+        .business-btn:hover {
+            background-color: #107161;
+        }
+
+        /* Dark Mode Buttons */
+        .dark-mode button {
+            background-color: #1f7b4d;
+            color: #e8f5e9;
+        }
+
+        .dark-mode button:hover {
+            background-color: #1b6e44;
+        }
+
+        .dark-mode .business-btn {
+            background-color: #0d5742;
+        }
+
+        .dark-mode .business-btn:hover {
+            background-color: #0a4b38;
+        }
+
+        /* Footer */
+        .footer {
+            font-size: 0.9rem;
+            color: #757575;
+            margin-top: 10px;
+        }
+
+        .footer a {
+            color: #075e54;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .dark-mode .footer {
+            color: #a9b3ba;
+        }
+
+        .dark-mode .footer a {
+            color: #1da851;
+        }
+    </style>
+</head>
+<body>
+    <button class="dark-mode-toggle" id="darkModeToggle">Dark Mode</button>
+    <div class="container" id="container">
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Logo">
+            WhatsApp Direct Chat
+        </div>
+        <select id="countryCode">
+            <option value="+92">Pakistan (+92)</option>
+            <option value="+1">United States (+1)</option>
+            <option value="+44">United Kingdom (+44)</option>
+            <option value="+61">Australia (+61)</option>
+            <!-- Add more country codes as needed -->
+        </select>
+        <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., 1234567890)" />
+        <div class="button-container">
+            <button id="chatButton">WhatsApp</button>
+            <button id="businessButton" class="business-btn">WhatsApp Business</button>
+        </div>
+        <div class="footer">
+            Made with ❤️ by Ashar Dian | <a href="https://web.whatsapp.com/" target="_blank">WhatsApp Web</a>
+        </div>
+    </div>
+
+    <script>
+        function formatPhoneNumber(number) {
+            return number.startsWith('0') ? number.substring(1) : number;
+        }
+
+        document.getElementById('chatButton').addEventListener('click', function () {
+            const countryCode = document.getElementById('countryCode').value;
+            let phoneNumber = document.getElementById('phoneNumber').value.trim();
+
+            if (phoneNumber === "") {
+                alert("Please enter a phone number.");
+                return;
+            }
+
+            phoneNumber = formatPhoneNumber(phoneNumber);
+            const fullNumber = `${countryCode}${phoneNumber}`;
+            window.open(`https://wa.me/${fullNumber}`, '_blank');
+        });
+
+        document.getElementById('businessButton').addEventListener('click', function () {
+            const countryCode = document.getElementById('countryCode').value;
+            let phoneNumber = document.getElementById('phoneNumber').value.trim();
+
+            if (phoneNumber === "") {
+                alert("Please enter a phone number.");
+                return;
+            }
+
+            phoneNumber = formatPhoneNumber(phoneNumber);
+            const fullNumber = `${countryCode}${phoneNumber}`;
+            window.open(`https://wa.me/${fullNumber}?app=business`, '_blank');
+        });
+
+        document.getElementById('darkModeToggle').addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('container').classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html>
